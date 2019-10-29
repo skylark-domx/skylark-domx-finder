@@ -3,7 +3,7 @@ define([
     "skylark-langx/langx",
     "skylark-domx-browser",
     "skylark-domx-noder"
-], function(skylark, langx, browser, noder, velm) {
+], function(skylark, langx, browser, noder) {
     var local = {},
         filter = Array.prototype.filter,
         slice = Array.prototype.slice,
