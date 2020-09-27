@@ -333,7 +333,7 @@ define([
          * @param {Object} elm
          */
         'parent': function(elm) {
-            return !!elm.parentNode;
+            return !!elm.parentElement;
         },
 
         'selected': function(elm) {
@@ -724,7 +724,7 @@ define([
      */
     function ancestor(node, selector, root) {
         var rootIsSelector = root && langx.isString(root);
-        while (node = node.parentNode) {
+        while (node = node.parentElement) {
             if (matches(node, selector)) {
                 return node;
             }
@@ -750,7 +750,7 @@ define([
     function ancestors(node, selector, root) {
         var ret = [],
             rootIsSelector = root && langx.isString(root);
-        while ((node = node.parentNode) && (node.nodeType !== 9)) {
+        while ((node = node.parentElement) && (node.nodeType !== 9)) {
             if (root) {
                 if (rootIsSelector) {
                     if (matches(node, root)) {
@@ -807,7 +807,7 @@ define([
 
     function closest(node, selector) {
         while (node && !(matches(node, selector))) {
-            node = node.parentNode;
+            node = node.parentElement;
         }
 
         return node;
@@ -1000,7 +1000,7 @@ define([
      * @param {String optionlly} selector
      */
     function parent(elm, selector) {
-        var node = elm.parentNode;
+        var node = elm.parentElement;
         if (node && (!selector || matches(node, selector))) {
             return node;
         }
@@ -1055,7 +1055,7 @@ define([
      * @param {String optionlly} selector
      */
     function siblings(elm, selector) {
-        var node = elm.parentNode.firstChild,
+        var node = elm.parentElement.firstChild,
             ret = [];
         while (node) {
             if (node.nodeType == 1 && node !== elm) {
