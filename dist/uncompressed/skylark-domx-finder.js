@@ -990,6 +990,37 @@ define('skylark-domx-finder/finder',[
         return null;
     }
 
+
+    /**
+     * Returns the index of an element within its parent for a selected set of
+     * elements
+     * @param  {HTMLElement} el
+     * @param  {selector} selector
+     * @return {number}
+     */
+    function index(el, selector) {
+        var index = 0;
+
+        if (!el || !el.parentNode) {
+            return -1;
+        }
+
+        while (el && (el = el.previousElementSibling)) {
+            if (langx.isString(selectors)) {
+                if (matches(el, selector)) {
+                    index++;
+                }
+            } else if (langx.isFunction(selectors)) {
+                if (selectors(el)) {
+                    index++;
+                }
+            }
+            index++;
+        }
+
+        return index;
+    }    
+
     /*
      * Get the last child of the specified element , optionally filtered by a selector.
      * @param {HTMLElement} elm
@@ -1181,6 +1212,8 @@ define('skylark-domx-finder/finder',[
         findAll: findAll,
 
         firstChild: firstChild,
+
+        index,
 
         lastChild: lastChild,
 
