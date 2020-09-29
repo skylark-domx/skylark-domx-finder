@@ -1006,12 +1006,12 @@ define('skylark-domx-finder/finder',[
         }
 
         while (el && (el = el.previousElementSibling)) {
-            if (langx.isString(selectors)) {
+            if (langx.isString(selector)) {
                 if (matches(el, selector)) {
                     index++;
                 }
-            } else if (langx.isFunction(selectors)) {
-                if (selectors(el)) {
+            } else if (langx.isFunction(selector)) {
+                if (selector(el)) {
                     index++;
                 }
             }
