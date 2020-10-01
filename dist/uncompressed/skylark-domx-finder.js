@@ -893,14 +893,40 @@ define('skylark-domx-finder/finder',[
         return ret;
     }
 
-    function closest(node, selector) {
-        while (node && !(matches(node, selector))) {
-            node = node.parentElement;
+
+
+    //function closest(node, selector) {
+    //    while (node && !(matches(node, selector))) {
+    //        node = node.parentElement;
+    //    }
+    //   return node;
+    //}
+
+
+    function closest(/**HTMLElement*/elm, /**String*/selector, /**HTMLElement*/ctx, includeCTX) {
+        if (elm) {
+            ctx = ctx || document;
+
+            do {
+                if (
+                    selector != null &&
+                    (
+                        selector[0] === '>' ?
+                        elm.parentElement === ctx && matches(elm, selector) :
+                        matches(elm, selector)
+                    ) ||
+                    includeCTX && elm === ctx
+                ) {
+                    return elm;
+                }
+
+                if (elm === ctx) break;
+                /* jshint boss:true */
+            } while (elm = parent(elm));
         }
 
-        return node;
+        return null;
     }
-
     /*
      * Get the decendant of the specified element , optionally filtered by a selector.
      * @param {HTMLElement} elm
@@ -1119,7 +1145,8 @@ define('skylark-domx-finder/finder',[
      * @param {String optionlly} selector
      */
     function parent(elm, selector) {
-        var node = elm.parentElement;
+        var node = (elm.host && elm !== document && elm.host.nodeType) ? elm.host : elm.parentElement;
+
         if (node && (!selector || matches(node, selector))) {
             return node;
         }
