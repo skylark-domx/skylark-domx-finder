@@ -26,6 +26,7 @@
   "dependencies": {
     "skylark-domx-browser": "git+https://github.com/skylark-domx/skylark-domx-browser.git#master",
     "skylark-domx-noder": "git+https://github.com/skylark-domx/skylark-domx-noder.git#master",
+    "skylark-domx-styler": "git+https://github.com/skylark-domx/skylark-domx-styler.git#master",
     "skylark-langx": "git+https://github.com/skylark-langx/skylark-langx.git#master"
   },
   "engines": {

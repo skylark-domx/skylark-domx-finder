@@ -2,8 +2,9 @@ define([
     "skylark-langx/skylark",
     "skylark-langx/langx",
     "skylark-domx-browser",
-    "skylark-domx-noder"
-], function(skylark, langx, browser, noder) {
+    "skylark-domx-noder",
+    "skylark-domx-styler"
+], function(skylark, langx, browser, noder,styler) {
     var local = {},
         filter = Array.prototype.filter,
         slice = Array.prototype.slice,
@@ -807,6 +808,47 @@ define([
 
 
 
+    /**
+     * Gets nth child of elm, ignoring hidden children, sortable's elements (does not ignore clone if it's visible)
+     * and non-draggable elements
+     * @param  {HTMLElement} elm       The parent element
+     * @param  {Number} idx      The index of the child
+     * @param  {Object} options       Parent's options
+     * @return {HTMLElement}          The child at index idx, or null if not found
+     */
+    function childAt(elm, idx, options) {
+        var currentChild = 0,
+            children = elm.children;
+
+        options = langx.mixin({
+            ignoreHidden : true,
+            excluding : null,
+            closesting : null
+        },options);
+
+        for(var i=0;i < children.length;i++) {
+            var child = children[i];
+            if (options.ignoreHidden && styler.css(child) === "none") {
+                continue;
+            }
+            if (options.excluding && options.excluding.includes(child)) {
+                continue;
+            }
+
+            if (options.closesting &&  !closest(child, options.closesting, elm, false)) {
+                continue;
+            }
+
+            if (currentChild === idx) {
+                return child;
+            }
+            currentChild++;
+        }
+        return null;
+    }
+
+
+
     //function closest(node, selector) {
     //    while (node && !(matches(node, selector))) {
     //        node = node.parentElement;
@@ -1137,6 +1179,8 @@ define([
         ancestors: ancestors,
 
         byId: byId,
+
+        childAt: childAt,
 
         children: children,
 
