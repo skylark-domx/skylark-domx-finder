@@ -1256,6 +1256,39 @@ define('skylark-domx-finder/finder',[
         return ret;
     }
 
+
+    function scrollableParent(el, includeSelf) {
+        // skip to window
+        if (!el || !el.getBoundingClientRect) {
+            return noder.scrollingElement();
+        }
+
+        var elem = el;
+        var gotSelf = false;
+        do {
+            // we don't need to get elem css if it isn't even overflowing in the first place (performance)
+            if (elem.clientWidth < elem.scrollWidth || elem.clientHeight < elem.scrollHeight) {
+                var elemCSS = styler.css(elem);
+                if (
+                    elem.clientWidth < elem.scrollWidth && (elemCSS.overflowX == 'auto' || elemCSS.overflowX == 'scroll') ||
+                    elem.clientHeight < elem.scrollHeight && (elemCSS.overflowY == 'auto' || elemCSS.overflowY == 'scroll')
+                ) {
+                    if (!elem || !elem.getBoundingClientRect || elem === document.body) {
+                        return noder.scrollingElement();
+                    } 
+                    if (gotSelf || includeSelf) {
+                        return elem;
+                    }
+                    gotSelf = true;
+                }
+            }
+        /* jshint boss:true */
+        } while (elem = elem.parentNode);
+
+        return noder.scrollingElement();
+    }
+
+
     var finder = function() {
         return finder;
     };
@@ -1301,6 +1334,8 @@ define('skylark-domx-finder/finder',[
         previousSiblings,
 
         pseudos: local.pseudos,
+
+        scrollableParent,
 
         siblings: siblings
     });
